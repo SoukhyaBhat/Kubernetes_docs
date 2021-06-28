@@ -6,8 +6,10 @@ As long as the PodPresets is in alpha status, the following changes need to be m
 Add:
 ```
 spec:
-  kubeAPIServer:
-    appendAdmissionPlugins:
+kubeAPIServer:
+    enableAdmissionPlugins:
+    - PersistentVolumeLabel
+    - NodeRestriction
     - PodPreset
     runtimeConfig:
       settings.k8s.io/v1alpha1: "true"

@@ -5,10 +5,10 @@
 # Usage of kube2iam is recommended, but not yet implemented by default in kops
 #
 
-DEFAULT_REGION="eu-west-1"
+DEFAULT_REGION="ap-south-1"
 AWS_REGION="${AWS_REGION:-${DEFAULT_REGION}}"
 
-NODE_ROLE="nodes.kubernetes.newtech.academy"
+NODE_ROLE="nodes.kubernetes-soukhya4.tk"
 
 export AWS_REGION
 
@@ -21,7 +21,7 @@ aws iam put-role-policy --role-name ${NODE_ROLE} --policy-name external-dns-poli
        "route53:ChangeResourceRecordSets"
      ],
      "Resource": [
-       "arn:aws:route53:::hostedzone/*"
+       "arn:aws:route53:::hostedzone/Z06839033DPY3HIXYOJA7"
      ]
    },
    {

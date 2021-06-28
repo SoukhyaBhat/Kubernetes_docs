@@ -42,7 +42,7 @@ spec:
                     operator: In
                     values:
                     - pod-affinity-1
-              topologyKey: "kubernetes.io/hostname"
+              topologyKey: "failure-domain.beta.kubernetes.io/zone"
       containers:
       - name: redis
         image: redis

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  Copyright 2020 Crunchy Data Solutions, Inc.
+#  Copyright 2020 - 2021 Crunchy Data Solutions, Inc.
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
 #  You may obtain a copy of the License at
@@ -14,7 +14,7 @@
 # This script should be run after the operator has been deployed
 PGO_OPERATOR_NAMESPACE="${PGO_OPERATOR_NAMESPACE:-pgo}"
 PGO_USER_ADMIN="${PGO_USER_ADMIN:-pgouser-admin}"
-PGO_CLIENT_VERSION="${PGO_CLIENT_VERSION:-v4.3.2}"
+PGO_CLIENT_VERSION="${PGO_CLIENT_VERSION:-v4.7.0}"
 PGO_CLIENT_URL="https://github.com/CrunchyData/postgres-operator/releases/download/${PGO_CLIENT_VERSION}"
 
 PGO_CMD="${PGO_CMD-kubectl}"
@@ -37,9 +37,15 @@ fi
 OUTPUT_DIR="${HOME}/.pgo/${PGO_OPERATOR_NAMESPACE}"
 install -d -m a-rwx,u+rwx "${OUTPUT_DIR}"
 
-echo "Operating System found is ${UNAME_RESULT}. Downloading ${BIN_NAME} client binary..."
+if [ -f "${OUTPUT_DIR}/pgo" ]
+then
+	echo "pgo Client Binary detected at: ${OUTPUT_DIR}"
+	echo "Updating Binary..."
+fi
 
-curl -C - -Lo "${OUTPUT_DIR}/pgo" "${PGO_CLIENT_URL}/${BIN_NAME}"
+echo "Operating System found is ${UNAME_RESULT}..."
+echo "Downloading ${BIN_NAME} version: ${PGO_CLIENT_VERSION}..."
+curl -Lo "${OUTPUT_DIR}/pgo" "${PGO_CLIENT_URL}/${BIN_NAME}"
 chmod +x "${OUTPUT_DIR}/pgo"
 
 

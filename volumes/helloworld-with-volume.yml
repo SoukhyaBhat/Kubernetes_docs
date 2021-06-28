@@ -24,4 +24,4 @@ spec:
       volumes:
       - name: myvolume
         awsElasticBlockStore:
-          volumeID: # insert AWS EBS volumeID here
+          volumeID: vol-0b12797095dd639cc

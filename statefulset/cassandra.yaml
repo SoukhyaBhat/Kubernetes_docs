@@ -31,11 +31,11 @@ spec:
           name: cql
         resources:
           limits:
-            cpu: "500m"
-            memory: 1Gi
+            cpu: "0.1"
+            memory: 300Mi
           requests:
-           cpu: "500m"
-           memory: 1Gi
+           cpu: "0.1"
+           memory: 300Mi
         securityContext:
           capabilities:
             add:
@@ -67,9 +67,8 @@ spec:
         readinessProbe:
           exec:
             command:
-            - /bin/bash
-            - -c
-            - /ready-probe.sh
+            - ls
+            - /tmp
           initialDelaySeconds: 15
           timeoutSeconds: 5
         # These volume mounts are persistent. They are like inline claims,
@@ -84,6 +83,8 @@ spec:
   volumeClaimTemplates:
   - metadata:
       name: cassandra-data
+      annotations:
+          volume.beta.kubernetes.io/storage-class: "standard"
     spec:
       accessModes: [ "ReadWriteOnce" ]
       storageClassName: standard
@@ -92,13 +93,20 @@ spec:
           storage: 8Gi
 ---
 kind: StorageClass
-apiVersion: storage.k8s.io/v1beta1
+apiVersion: storage.k8s.io/v1
 metadata:
   name: standard
 provisioner: kubernetes.io/aws-ebs
 parameters:
   type: gp2
-  zone: eu-west-1a
+volumeBindingMode: WaitForFirstConsumer
+allowedTopologies:
+- matchLabelExpressions:
+  - key: failure-domain.beta.kubernetes.io/zone
+    values:
+    - ap-south-1a # this is the availability zone, will depend on your cloud provider
+    # multi-az can be added, but that defeats the purpose in our scenario
+  
 ---
 apiVersion: v1
 kind: Service
